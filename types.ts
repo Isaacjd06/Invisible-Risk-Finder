@@ -26,6 +26,7 @@ export interface WorkMap {
 
 export interface SuggestedTool {
   name: string;
+  url: string;
   bestFor: string;
   whyFits: string[];
   tag: string;
@@ -40,6 +41,7 @@ export interface ScanReport {
   originalInput: string;
   workMap: WorkMap;
   suggestedTools: SuggestedTool[];
+  stabilizingActions?: string[];
   sections: {
     [key: string]: RiskFinding[];
   };

@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Loader2, CheckCircle2, AlertTriangle } from 'lucide-react';
 
 interface Props {
@@ -11,84 +11,72 @@ interface Props {
 export const LoadingScreen: React.FC<Props> = ({ isDataReady, onComplete, isError }) => {
   const [activeStep, setActiveStep] = useState(1);
   const [checkedSteps, setCheckedSteps] = useState<number[]>([]);
-  const isDataReadyRef = useRef(isDataReady);
-
-  useEffect(() => {
-    isDataReadyRef.current = isDataReady;
-  }, [isDataReady]);
-
-  // Handle the automatic progression of the first few steps
-  useEffect(() => {
-    let timeout: any;
-
-    const advance = (step: number) => {
-      if (step > 4) {
-        onComplete();
-        return;
-      }
-
-      // If we are on step 3 (Calculating Risks) and data isn't ready, wait for it
-      if (step === 3 && !isDataReadyRef.current) {
-        setActiveStep(3);
-        return;
-      }
-
-      // If we are on step 4 or moving to it because data is ready
-      setActiveStep(step);
-      
-      const delay = step === 4 ? 600 : 1200;
-      
-      timeout = setTimeout(() => {
-        setCheckedSteps(prev => [...new Set([...prev, step])]);
-        advance(step + 1);
-      }, delay);
-    };
-
-    // Start the process
-    advance(1);
-
-    return () => clearTimeout(timeout);
-  }, [onComplete]);
-
-  // Watch for data readiness to trigger the final jump
-  useEffect(() => {
-    if (isDataReady && activeStep === 3) {
-      // Data arrived while we were waiting on Step 3
-      setCheckedSteps(prev => [...new Set([...prev, 3])]);
-      const timer = setTimeout(() => {
-        setActiveStep(4);
-        setTimeout(() => {
-          setCheckedSteps(prev => [...new Set([...prev, 4])]);
-          setTimeout(() => onComplete(), 300);
-        }, 500);
-      }, 200);
-      return () => clearTimeout(timer);
-    }
-  }, [isDataReady, activeStep, onComplete]);
 
   const steps = [
-    { id: 1, label: 'Processing Input', sub: 'Parsing workflow syntax...' },
-    { id: 2, label: 'Reasoning Engine', sub: 'Modeling causal chains with Gemini 3 Pro...' },
-    { id: 3, label: 'Calculating Risks', sub: 'Applying 7-lens forensic taxonomy...' },
-    { id: 4, label: 'Finalizing Report', sub: 'Synthesizing Work Map and automation stack...' }
+    { id: 1, label: 'Decomposing Workflow Structure', sub: 'Mapping stated events into formal state nodes...' },
+    { id: 2, label: 'Simulating Failure States', sub: 'Probing unstated failure thresholds and race conditions...' },
+    { id: 3, label: 'Synthesizing Risk Vectors', sub: 'Correlating simulated outcomes to structural vulnerabilities...' },
+    { id: 4, label: 'Finalizing Diagnostic Report', sub: 'Hardening finding relevance and automation mapping...' }
   ];
+
+  useEffect(() => {
+    // Stage 1: Fast recon
+    if (activeStep === 1) {
+      const timer = setTimeout(() => {
+        setCheckedSteps(prev => [...prev, 1]);
+        setActiveStep(2);
+      }, 3500);
+      return () => clearTimeout(timer);
+    }
+
+    // Stage 2: Heavy simulation (Deep Research phase)
+    if (activeStep === 2) {
+      const timer = setTimeout(() => {
+        setCheckedSteps(prev => [...prev, 2]);
+        setActiveStep(3);
+      }, 6000);
+      return () => clearTimeout(timer);
+    }
+
+    // Stage 3: Synthesis - waits for the actual backend data to resolve
+    if (activeStep === 3 && isDataReady) {
+      const timer = setTimeout(() => {
+        setCheckedSteps(prev => [...prev, 3]);
+        setActiveStep(4);
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+
+    // Stage 4: Polish
+    if (activeStep === 4) {
+      const timer = setTimeout(() => {
+        setCheckedSteps(prev => [...prev, 4]);
+        setTimeout(() => onComplete(), 1000); 
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [activeStep, isDataReady, onComplete]);
 
   return (
     <div className="fixed inset-0 bg-slate-50 flex items-center justify-center z-50 px-6">
-      <div className="max-w-md w-full bg-white border border-slate-200 rounded-2xl shadow-2xl p-8">
+      <div className="max-w-md w-full bg-white border border-slate-200 rounded-2xl shadow-2xl p-10">
         <div className="flex flex-col items-center text-center mb-10">
-          <div className={`w-16 h-16 ${isError ? 'bg-amber-50 text-amber-600' : 'bg-indigo-50 text-indigo-600'} rounded-2xl flex items-center justify-center mb-6`}>
-            {isError ? <AlertTriangle size={32} className="animate-pulse" /> : <Loader2 size={32} className="animate-spin" />}
+          <div className={`w-20 h-20 ${isError ? 'bg-amber-50 text-amber-600' : 'bg-indigo-50 text-indigo-600'} rounded-3xl flex items-center justify-center mb-6 shadow-inner`}>
+            {isError ? <AlertTriangle size={40} className="animate-pulse" /> : <Loader2 size={40} className="animate-spin" />}
           </div>
-          <h2 className="text-2xl font-bold text-slate-900 mb-2">
-            {isError ? 'Fallback Diagnostic Active' : 'Live Diagnostic in Progress'}
+          <h2 className="text-2xl font-black text-slate-900 mb-2 uppercase tracking-tight">
+            {isError ? 'System Recovery Active' : 'Initiating Structural Audit'}
           </h2>
-          <p className="text-slate-500 text-sm italic">
-            {isError ? '"Simulating results based on forensic baseline."' : '"The invisible is only invisible to the unmapped."'}
+          <p className="text-slate-500 text-xs font-bold uppercase tracking-[0.2em] opacity-60">
+            {isDataReady 
+              ? 'Synthesis complete. Formatting forensic report.' 
+              : activeStep === 2 
+                ? 'Performing multi-pass failure simulations.'
+                : 'Mapping process boundaries and information gaps.'}
           </p>
         </div>
 
-        <div className="space-y-6">
+        <div className="space-y-8">
           {steps.map((s) => {
             const isChecked = checkedSteps.includes(s.id);
             const isActive = activeStep === s.id;
@@ -97,39 +85,40 @@ export const LoadingScreen: React.FC<Props> = ({ isDataReady, onComplete, isErro
             return (
               <div 
                 key={s.id} 
-                className={`flex items-center gap-4 transition-all duration-300 ${isPending ? 'opacity-30' : 'opacity-100'}`}
+                className={`flex items-start gap-5 transition-all duration-500 ${isPending ? 'opacity-20 scale-95 blur-[1px]' : 'opacity-100 scale-100'}`}
               >
-                <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center border-2 transition-colors duration-300 ${
+                <div className={`flex-shrink-0 w-10 h-10 rounded-2xl flex items-center justify-center border-2 transition-all duration-500 ${
                   isChecked 
-                    ? 'bg-green-500 border-green-500 text-white' 
+                    ? 'bg-emerald-500 border-emerald-500 text-white shadow-lg shadow-emerald-100' 
                     : isActive 
-                      ? 'border-indigo-600 text-indigo-600' 
-                      : 'border-slate-300 text-slate-300'
+                      ? 'border-indigo-600 text-indigo-600 shadow-lg shadow-indigo-50 animate-pulse' 
+                      : 'border-slate-200 text-slate-300'
                 }`}>
-                  {isChecked ? <CheckCircle2 size={18} /> : <span className="text-sm font-bold">{s.id}</span>}
+                  {isChecked ? <CheckCircle2 size={20} strokeWidth={3} /> : <span className="text-sm font-black">{s.id}</span>}
                 </div>
-                <div className="flex-1">
-                  <p className={`text-sm font-bold transition-colors ${isChecked ? 'text-slate-900' : isActive ? 'text-indigo-600' : 'text-slate-400'}`}>
+                <div className="flex-1 text-left">
+                  <p className={`text-sm font-black uppercase tracking-widest transition-colors ${isChecked ? 'text-slate-900' : isActive ? 'text-indigo-600' : 'text-slate-400'}`}>
                     {s.label}
                   </p>
-                  <p className="text-xs text-slate-500">{s.sub}</p>
+                  <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-1">{s.sub}</p>
                 </div>
                 {isActive && (
-                  <Loader2 size={16} className="text-indigo-600 animate-spin" />
+                  <Loader2 size={16} className="text-indigo-600 animate-spin mt-1" />
                 )}
               </div>
             );
           })}
         </div>
 
-        <div className="mt-12 pt-6 border-t border-slate-100 flex items-center justify-between">
-          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-relaxed">
-            Forensic Protocol v3.0.1
-          </p>
-          <div className="flex items-center gap-1.5">
-            <span className={`w-1.5 h-1.5 rounded-full ${isError ? 'bg-amber-400' : 'bg-green-400 animate-pulse'}`}></span>
-            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-              {isError ? 'Simulation' : 'Live Engine'}
+        <div className="mt-12 pt-8 border-t border-slate-100 flex items-center justify-between">
+          <div className="flex flex-col">
+             <span className="text-[10px] font-black text-slate-300 uppercase tracking-widest">Diagnostic Core</span>
+             <span className="text-[10px] font-black text-slate-900 uppercase tracking-widest">Audit_Logic_v5.0</span>
+          </div>
+          <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-50 rounded-full border border-slate-100">
+            <span className={`w-1.5 h-1.5 rounded-full ${isError ? 'bg-amber-400' : 'bg-indigo-400 animate-pulse'}`}></span>
+            <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest">
+              {isError ? 'RECOVERY' : 'THINKING_CYCLES_MAX'}
             </span>
           </div>
         </div>
