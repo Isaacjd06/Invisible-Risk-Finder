@@ -71,7 +71,7 @@ const SuggestedToolsModal: React.FC<{
                     <h3 className="font-black text-slate-900 text-2xl tracking-tight">{tool.name}</h3>
                     {tool.url && (
                       <a href={tool.url} target="_blank" rel="noopener noreferrer" className="p-2 text-indigo-500 hover:bg-indigo-50 rounded-lg transition-colors">
-                        <ExternalLink size={18} />
+                        <ExternalLink size={20} />
                       </a>
                     )}
                   </div>
@@ -85,7 +85,7 @@ const SuggestedToolsModal: React.FC<{
                 </span>
               </div>
               <div className="space-y-4">
-                <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">Diagnostic Fit</p>
+                <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">Mechanism Implementation</p>
                 <ul className="space-y-3">
                   {tool.whyFits.map((point, pIdx) => (
                     <li key={pIdx} className="flex gap-4 p-4 bg-slate-50 rounded-2xl text-sm text-slate-700 font-medium border border-slate-100">
@@ -231,13 +231,13 @@ export const ReportScreen: React.FC<Props> = ({ report, onNewScan }) => {
           </div>
         </aside>
 
-        {/* Dynamic Risk Feed */}
-        <main className="lg:col-span-9 space-y-8">
-          <div className="mb-4">
+        {/* Dynamic Risk Feed - Clean Words (No card header, no Lens prefix) */}
+        <main className="lg:col-span-9 space-y-10">
+          <div className="pb-4 border-b border-slate-100">
              <h3 className="text-3xl font-black text-slate-900 tracking-tighter uppercase">
                 {activeLens.label}
              </h3>
-             <p className="text-slate-500 font-bold text-xs uppercase tracking-widest mt-2">{activeLens.description}</p>
+             <p className="text-slate-500 font-bold text-xs uppercase tracking-[0.2em] mt-3 leading-relaxed max-w-2xl">{activeLens.description}</p>
           </div>
 
           <div className="space-y-8">
@@ -247,38 +247,39 @@ export const ReportScreen: React.FC<Props> = ({ report, onNewScan }) => {
           </div>
         </main>
 
-        {/* Full-Width Bottom Stabilizers */}
+        {/* Full-Width Bottom Structural Stabilizers - Vertical Bullet Point List */}
         <section className="lg:col-span-12 pt-16 mt-16 border-t border-slate-200">
-           <div className="bg-slate-950 text-white p-12 md:p-16 rounded-[3rem] shadow-2xl relative overflow-hidden">
+           <div className="bg-slate-950 text-white p-12 md:p-20 rounded-[3rem] shadow-2xl relative overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 to-transparent opacity-50" />
               <div className="relative z-10">
-                 <div className="flex items-center gap-4 mb-12">
+                 <div className="flex items-center gap-4 mb-14">
                     <div className="p-3 bg-indigo-500/20 rounded-2xl border border-indigo-500/30">
-                      <Shield className="text-indigo-400" size={24} />
+                      <Shield className="text-indigo-400" size={28} />
                     </div>
                     <div>
-                      <h3 className="text-2xl font-black uppercase tracking-[0.25em]">Structural Stabilizers</h3>
+                      <h3 className="text-2xl font-black uppercase tracking-[0.3em]">Structural Stabilizers</h3>
                       <p className="text-[10px] font-black text-indigo-400 uppercase tracking-widest mt-1">Audit-Hardened Observations</p>
                     </div>
                  </div>
                  
-                 <ul className="space-y-8 max-w-4xl">
-                    {report.stabilizingActions?.map((act, i) => (
-                      <li key={i} className="flex items-start gap-6 group">
-                         <div className="mt-1 flex-shrink-0 w-2.5 h-2.5 rounded-full bg-indigo-500 shadow-[0_0_12px_rgba(99,102,241,0.6)] group-hover:scale-125 transition-transform" />
-                         <p className="text-lg md:text-xl font-medium leading-relaxed text-slate-200 italic">
+                 <ul className="space-y-10 max-w-5xl">
+                    {report.stabilizingActions?.slice(0, 2).map((act, i) => (
+                      <li key={i} className="flex items-start gap-8 group">
+                         <div className="mt-2.5 flex-shrink-0 w-3 h-3 rounded-full bg-indigo-500 shadow-[0_0_15px_rgba(99,102,241,0.8)] group-hover:scale-125 transition-transform" />
+                         <p className="text-xl md:text-2xl font-medium leading-relaxed text-slate-200 italic opacity-90">
                            {act}
                          </p>
                       </li>
                     ))}
                  </ul>
 
-                 <div className="flex flex-col md:flex-row items-center justify-between gap-6 mt-16 pt-10 border-t border-white/5">
+                 <div className="flex flex-col md:flex-row items-center justify-between gap-6 mt-20 pt-10 border-t border-white/5">
                    <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
-                      Deep_Forensic_Protocol v5.0 • Simulated Scenarios: 1,000+
+                      Deep_Forensic_Protocol v5.5 • Simulated Scenarios: 1,000+
                    </p>
                    <div className="flex gap-4">
-                      <span className="text-[9px] font-black px-4 py-2 bg-white/5 rounded-full text-slate-400 border border-white/10 uppercase tracking-widest">Causal Mapping Verified</span>
+                      <span className="text-[9px] font-black px-4 py-2 bg-white/5 rounded-full text-slate-400 border border-white/10 uppercase tracking-widest">Causal Verified</span>
+                      <span className="text-[9px] font-black px-4 py-2 bg-white/5 rounded-full text-slate-400 border border-white/10 uppercase tracking-widest">Structural Optimized</span>
                    </div>
                  </div>
               </div>

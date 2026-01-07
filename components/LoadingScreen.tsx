@@ -13,14 +13,14 @@ export const LoadingScreen: React.FC<Props> = ({ isDataReady, onComplete, isErro
   const [checkedSteps, setCheckedSteps] = useState<number[]>([]);
 
   const steps = [
-    { id: 1, label: 'Decomposing Workflow Structure', sub: 'Mapping stated events into formal state nodes...' },
-    { id: 2, label: 'Simulating Failure States', sub: 'Probing unstated failure thresholds and race conditions...' },
-    { id: 3, label: 'Synthesizing Risk Vectors', sub: 'Correlating simulated outcomes to structural vulnerabilities...' },
-    { id: 4, label: 'Finalizing Diagnostic Report', sub: 'Hardening finding relevance and automation mapping...' }
+    { id: 1, label: 'Workflow Decomposition', sub: 'Mapping stated events into formal state nodes...' },
+    { id: 2, label: 'Failure Mode Simulation', sub: 'Conducting 1,000 stress simulations for race conditions...' },
+    { id: 3, label: 'Forensic Synthesis', sub: 'Correlating simulated outcomes to structural vulnerabilities...' },
+    { id: 4, label: 'Audit Hardening', sub: 'Validating finding relevance and automation strategies...' }
   ];
 
   useEffect(() => {
-    // Stage 1: Fast recon
+    // Stage 1: Decomposition
     if (activeStep === 1) {
       const timer = setTimeout(() => {
         setCheckedSteps(prev => [...prev, 1]);
@@ -29,16 +29,16 @@ export const LoadingScreen: React.FC<Props> = ({ isDataReady, onComplete, isErro
       return () => clearTimeout(timer);
     }
 
-    // Stage 2: Heavy simulation (Deep Research phase)
+    // Stage 2: Simulation (Deep Research phase)
     if (activeStep === 2) {
       const timer = setTimeout(() => {
         setCheckedSteps(prev => [...prev, 2]);
         setActiveStep(3);
-      }, 6000);
+      }, 7000);
       return () => clearTimeout(timer);
     }
 
-    // Stage 3: Synthesis - waits for the actual backend data to resolve
+    // Stage 3: Synthesis - waits for actual backend data
     if (activeStep === 3 && isDataReady) {
       const timer = setTimeout(() => {
         setCheckedSteps(prev => [...prev, 3]);
@@ -47,12 +47,12 @@ export const LoadingScreen: React.FC<Props> = ({ isDataReady, onComplete, isErro
       return () => clearTimeout(timer);
     }
 
-    // Stage 4: Polish
+    // Stage 4: Formatting
     if (activeStep === 4) {
       const timer = setTimeout(() => {
         setCheckedSteps(prev => [...prev, 4]);
         setTimeout(() => onComplete(), 1000); 
-      }, 2000);
+      }, 1500);
       return () => clearTimeout(timer);
     }
   }, [activeStep, isDataReady, onComplete]);
@@ -65,14 +65,14 @@ export const LoadingScreen: React.FC<Props> = ({ isDataReady, onComplete, isErro
             {isError ? <AlertTriangle size={40} className="animate-pulse" /> : <Loader2 size={40} className="animate-spin" />}
           </div>
           <h2 className="text-2xl font-black text-slate-900 mb-2 uppercase tracking-tight">
-            {isError ? 'System Recovery Active' : 'Initiating Structural Audit'}
+            {isError ? 'Recovery Protocol' : 'Structural Audit Active'}
           </h2>
           <p className="text-slate-500 text-xs font-bold uppercase tracking-[0.2em] opacity-60">
             {isDataReady 
               ? 'Synthesis complete. Formatting forensic report.' 
               : activeStep === 2 
                 ? 'Performing multi-pass failure simulations.'
-                : 'Mapping process boundaries and information gaps.'}
+                : 'Mapping process boundaries and gaps.'}
           </p>
         </div>
 
@@ -113,12 +113,12 @@ export const LoadingScreen: React.FC<Props> = ({ isDataReady, onComplete, isErro
         <div className="mt-12 pt-8 border-t border-slate-100 flex items-center justify-between">
           <div className="flex flex-col">
              <span className="text-[10px] font-black text-slate-300 uppercase tracking-widest">Diagnostic Core</span>
-             <span className="text-[10px] font-black text-slate-900 uppercase tracking-widest">Audit_Logic_v5.0</span>
+             <span className="text-[10px] font-black text-slate-900 uppercase tracking-widest">Forensic_v5.0</span>
           </div>
           <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-50 rounded-full border border-slate-100">
             <span className={`w-1.5 h-1.5 rounded-full ${isError ? 'bg-amber-400' : 'bg-indigo-400 animate-pulse'}`}></span>
             <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest">
-              {isError ? 'RECOVERY' : 'THINKING_CYCLES_MAX'}
+              {isError ? 'RECOVERY' : 'RESEARCH_MAX'}
             </span>
           </div>
         </div>

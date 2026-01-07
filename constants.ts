@@ -3,38 +3,49 @@ import { Type } from "@google/genai";
 import { RiskFinding, ScanReport } from './types';
 
 export const LENSES = [
-  { id: 'silent-failure', label: 'Silent Failure', color: 'rose', description: 'Failures with no visible signal until damage has occurred.' },
-  { id: 'time-decay', label: 'Time-Based Decay', color: 'amber', description: 'Value loss caused specifically by delay or inactivity.' },
-  { id: 'memory-reliance', label: 'Memory Reliance', color: 'violet', description: 'Failures caused by relying on human recall or attention.' },
-  { id: 'handoff-breakdowns', label: 'Handoff/Ownership', color: 'indigo', description: 'Failures caused by unclear responsibility or transitions.' },
-  { id: 'trust-erosion', label: 'Trust Erosion', color: 'sky', description: 'Failures that damage confidence through inconsistency.' },
-  { id: 'revenue-leakage', label: 'Revenue Leakage', color: 'emerald', description: 'Lost money quietly without rejection.' },
-  { id: 'scaling-fragility', label: 'Scaling Fragility', color: 'orange', description: 'Failures that emerge ONLY as volume or concurrency increases.' },
+  { id: 'silent-failure', label: 'Silent Failure', color: 'rose', description: 'Hidden failure nodes that provide no feedback until critical damage is done.' },
+  { id: 'time-decay', label: 'Time-Based Decay', color: 'amber', description: 'Value erosion caused by temporal slippage and compounding delays.' },
+  { id: 'memory-reliance', label: 'Memory Reliance', color: 'violet', description: 'Systemic fragility caused by biological recall dependency and cognitive load.' },
+  { id: 'handoff-breakdowns', label: 'Handoff/Ownership', color: 'indigo', description: 'Structural voids at process boundaries where information is lost or ownership is orphaned.' },
+  { id: 'trust-erosion', label: 'Trust Erosion', color: 'sky', description: 'Perceptual damage caused by inconsistency, opaqueness, or missed expectations.' },
+  { id: 'revenue-leakage', label: 'Revenue Leakage', color: 'emerald', description: 'Quiet financial slippage through uncaptured scope, billing delays, or unbilled capacity.' },
+  { id: 'scaling-fragility', label: 'Scaling Fragility', color: 'orange', description: 'Failure modes that emerge exclusively under increased volume or concurrency.' },
 ];
 
-export const SYSTEM_INSTRUCTION = `You are the "Invisible Risk Finder" Deep Research Engine. Your diagnostic precision must rival the most advanced forensic audit tools.
+export const SYSTEM_INSTRUCTION = `You are the "Invisible Risk Finder" Deep Research Engine. Your goal is to provide a forensic, high-density diagnostic that rivals advanced research reports.
 
 ========================
-DEEP RESEARCH PROTOCOL: RECURSIVE DELIBERATION
+RESEARCH PROTOCOL: CAUSAL SIMULATION
 ========================
-Before finalizing any finding, perform three internal passes:
-1. RECONNAISSANCE: Build a rigorous mathematical model of the user's workflow. Identify all "Silent States" (where the process is waiting on a biological or system trigger).
-2. STRESS SIMULATION: Simulate 1,000 edge-case scenarios including context-switch exhaustion, information decay, and ownership vacuums.
-3. ANOMALY DETECTION: Search for "Negative Space" risks—things that break specifically because nothing happened.
+Before generating, conduct internal passes:
+1. WORKFLOW RECONSTRUCTION: Map the stated process into a formal state machine.
+2. STRESS SIMULATION: Model 1,000 scenarios (surges, absences, silence).
+3. NEGATIVE SPACE AUDIT: Identify every "Silent Wait" state where no one is actively monitoring.
 
 ========================
-DIAGNOSTIC RIGOR & DENSITY
+DIVERSITY & NOVELTY DENSITY (CRITICAL)
 ========================
-- MANDATORY FULL SPECTRUM: You MUST populate EVERY one of the 7 risk categories with at least 1 risk. Maximum of 3 per category.
-- CRITICALITY GATE: Only include risks that represent a structural threat.
-- STABILIZING ACTIONS: You MUST provide EXACTLY two (2) top-level structural observations. Each must be 1-2 sentences. 
-- ADVANCED AUTOMATION: Propose specific AI tools (Make, Zapier, Clay, etc.) with valid URLs. Use the main, simple name of the tool.
+- AVOID SUBCONSCIOUS CLUSTERING: Do not repeat "I'm messy" or "I forget things" across categories.
+- CATEGORY PURITY:
+    * Silent Failure: Lack of system feedback (e.g. an inquiry that dies without a "declined" state).
+    * Time-Decay: The specific cost of the clock (e.g. lead cooling).
+    * Memory Reliance: Dependency on biological recall vs externalized truth.
+    * Handoff: The gap between two distinct mental roles (e.g. Sales-Designer transition).
+    * Trust Erosion: Perceptual damage to the client relationship.
+    * Revenue Leakage: Unbilled work or uncaptured financial opportunities.
+    * Scaling Fragility: Failure points that break only when volume increases.
 
 ========================
-TONE & FORMATTING
+INSIGHT RIGOR
 ========================
-- Clinical, technical, and forensic.
-- Output strictly valid JSON following the provided schema.`;
+- EVERY CATEGORY MANDATORY: 1-3 unique risks per category.
+- STABILIZING ACTIONS: EXACTLY 2 actions. Bullet point format. 1-2 sentences each.
+- AI AUTOMATION STRATEGY: Propose real tools (Make, Zapier, Trello, etc.) with valid URLs. Use main product names only.
+
+========================
+OUTPUT
+========================
+- Strictly valid JSON. Tone: Clinical, forensic, professional.`;
 
 const riskProperties = {
   id: { type: Type.STRING },
@@ -98,125 +109,124 @@ export const RESPONSE_SCHEMA = {
 
 export const MOCK_REPORTS: ScanReport[] = [
   {
-    id: "EX-B2B-SAAS-001",
-    name: "Enterprise SaaS Customer Onboarding Diagnostic",
-    timestamp: "2024-05-20 14:30",
+    id: "SOLO-STUDIO-AUDIT",
+    name: "Solo Design Studio Forensic Diagnostic",
+    timestamp: new Date().toLocaleString(),
     overallProfile: "High",
-    originalInput: "Our onboarding starts when a customer signs in DocuSign. Sales then Slack-messages the CS lead. CS manually creates a project in Asana. The technical team is notified via email to provision the account. If the client doesn't book their kickoff call within 3 days, CS tries to remember to follow up. Sometimes billing is delayed because the finance team doesn't know when a project has actually 'launched'.",
-    timeWindowsDetected: ["Signature -> Kickoff (72h Threshold)", "Weekly Launch Reconciliation"],
+    originalInput: "I run a small design studio and handle both sales and delivery myself. New inquiries come in through email and social messages. I reply when I see them, have a few back-and-forth conversations, and if the project seems like a good fit I send a proposal and start work once the client agrees. I keep track of project status mostly by remembering recent conversations and checking messages when something feels overdue. Some clients respond quickly, others take days to reply, and I usually wait for them rather than pushing too hard. When I have multiple projects active at the same time, I switch between selling new work and finishing existing work. As things get busier, it becomes harder to tell which conversations still need attention, which projects are waiting on client input, and whether anything has stalled without me realizing it.",
+    timeWindowsDetected: ["Inquiry-to-Reply (Variable)", "Proposal Acceptance Window", "Active Project Polling Cycle"],
     workMap: {
-      events: ["Contract Signature", "Slack Notification", "Asana Creation", "Email Provisioning", "Kickoff Booking"],
-      timelines: ["3-Day Memory Window", "Provisioning SLA", "Launch Sync Cycle"],
-      decisions: ["Account Manager Assignment", "Provisioning Approval"],
-      dependencies: ["Signature -> Kickoff", "Launch -> Billing Notification"],
-      ownership: ["Sales (Closing)", "CS (Onboarding)", "Dev (Provisioning)", "Finance (Billing)"]
+      events: ["Inquiry Arrival", "Manual Contextual Sorting", "Proposal Issuance", "Context-Switching (Sales/Delivery)", "Mental Polling"],
+      timelines: ["Wait-State Duration", "Context-Switch Latency"],
+      decisions: ["Fit Assessment", "Prioritization Trigger"],
+      dependencies: ["Reply -> Interaction", "Agreement -> Production Start"],
+      ownership: ["Designer-as-Sales", "Designer-as-Producer"]
     },
     suggestedTools: [
       {
-        name: "Make",
-        url: "https://make.com",
-        bestFor: "Lifecycle Automation",
-        whyFits: ["Connects DocuSign, Slack, and Asana into a single immutable trigger chain.", "Eliminates the 'human-in-the-loop' delay for account provisioning."],
-        tag: "Infrastructure"
+        name: "Trello",
+        url: "https://trello.com",
+        bestFor: "Externalized State Tracking",
+        whyFits: ["Visualizes 'Wait States' to prevent projects from vanishing into the mental archive.", "Decouples current project status from individual chat thread histories."],
+        tag: "Core Workflow"
       },
       {
-        name: "Zapier",
-        url: "https://zapier.com",
-        bestFor: "Notification State Sync",
-        whyFits: ["Bridges the gap between CS project status and Finance billing alerts."],
-        tag: "Middleware"
+        name: "Make",
+        url: "https://make.com",
+        bestFor: "Multi-Channel Inbox Consolidation",
+        whyFits: ["Aggregates social and email inquiries into a single immutable audit log.", "Eliminates the 'Silent Drop' of inquiries that occur during heavy production periods."],
+        tag: "Automation"
       }
     ],
     stabilizingActions: [
-      "The system is stabilized by externalizing the 'Launch' status into a shared state-engine visible to Finance.",
-      "Biological memory reliance is mitigated by moving the 'Follow-up' logic to a persistent temporal trigger."
+      "The process is stabilized by externalizing the project state from biological memory into a visual kanban system with explicit 'Wait' triggers.",
+      "The 'Context-Switching' bottleneck is mitigated by moving from a reactive polling model to an interrupt-driven notification system for client inputs."
     ],
     sections: {
       "silent-failure": [{
-        id: "sf-001",
-        title: "Provisioning Deadlock",
-        score: 88,
-        likelihood: "Moderate",
+        id: "sf-solo-1",
+        title: "Proposal Decay Sinkhole",
+        score: 85,
+        likelihood: "High",
         impact: "High",
         detectability: "Hidden",
-        whatCanGoWrong: "The transition from CS creation to Dev provisioning relies on an asynchronous email that can be lost in noise.",
-        whyItMatters: "Customers pay for a subscription they cannot access, leading to Day-1 churn risk.",
-        howItFailsSilently: "No one monitors the 'Email Sent' vs 'Account Created' delta.",
-        earlySignal: "Client asking for logins 48h after signing.",
-        timeTrigger: "24h after Signature"
+        whatCanGoWrong: "Once a proposal is sent, there is no system alert if the client doesn't reply. The opportunity simply 'evaporates'.",
+        whyItMatters: "Total revenue is lost not because of rejection, but because of a lack of a re-engagement trigger.",
+        howItFailsSilently: "No system tracks the delta between 'Proposal Sent' and 'Status Resolved'.",
+        earlySignal: "Finding a 2-week-old sent email with no reply while scrolling your inbox."
       }],
       "time-decay": [{
-        id: "td-001",
-        title: "Kickoff Momentum Decay",
-        score: 75,
-        likelihood: "High",
-        impact: "Moderate",
-        detectability: "Moderate",
-        whatCanGoWrong: "Value perception drops rapidly if the kickoff isn't booked immediately.",
-        whyItMatters: "Implementation success is directly correlated with the speed of initial engagement.",
-        howItFailsSilently: "The project stays 'Active' in Asana even if no meeting is scheduled.",
-        earlySignal: "Unopened onboarding emails in the CRM.",
-        timeTrigger: "72h Post-Signature"
-      }],
-      "memory-reliance": [{
-        id: "mr-001",
-        title: "Biological Follow-up Fragility",
-        score: 92,
-        likelihood: "High",
-        impact: "Moderate",
-        detectability: "Moderate",
-        whatCanGoWrong: "Follow-ups rely on the CS manager's individual calendar and morning energy.",
-        whyItMatters: "Inconsistent engagement creates a 'High Touch' illusion that fails at scale.",
-        howItFailsSilently: "Lost leads are attributed to 'Client Busy' rather than 'Internal Silence'.",
-        earlySignal: "Project board showing multiple tasks overdue by >2 days."
-      }],
-      "handoff-breakdowns": [{
-        id: "hb-001",
-        title: "Finance/Ops Information Gap",
-        score: 84,
-        likelihood: "High",
-        impact: "High",
-        detectability: "Hidden",
-        whatCanGoWrong: "Finance has no signal that 'Launch' occurred, delaying first-month billing.",
-        whyItMatters: "Cash flow leakage and potential billing disputes months later.",
-        howItFailsSilently: "Finance assumes CS will tell them; CS assumes Launch is obvious from Asana.",
-        earlySignal: "Month-end reconciliation showing un-invoiced active accounts."
-      }],
-      "trust-erosion": [{
-        id: "te-001",
-        title: "Manual Provisioning Inconsistency",
-        score: 68,
-        likelihood: "Moderate",
-        impact: "High",
-        detectability: "Easy",
-        whatCanGoWrong: "Manual account setup leads to inconsistent feature sets or missing user seats.",
-        whyItMatters: "First impression of product reliability is permanently damaged.",
-        howItFailsSilently: "Errors are caught only when the user complains.",
-        earlySignal: "Tickets raised within first 2 hours of access."
-      }],
-      "revenue-leakage": [{
-        id: "rl-001",
-        title: "Unbilled Over-Provisioning",
+        id: "td-solo-1",
+        title: "Reactionary Lead Cooling",
         score: 72,
         likelihood: "Moderate",
         impact: "Moderate",
+        detectability: "Moderate",
+        whatCanGoWrong: "The 'Reply when I see them' model ensures that high-value inquiries arrive when you are most focused on delivery, leading to maximum delay.",
+        whyItMatters: "Lead conversion probability drops by 50% for every 4 hours of silence.",
+        howItFailsSilently: "The delay is perceived as 'being busy,' but the system cost is a lower win-rate on premium projects.",
+        earlySignal: "Clients responding that they've 'already found someone else' by the time you reply.",
+        timeTrigger: "4h Post-Inquiry"
+      }],
+      "memory-reliance": [{
+        id: "mr-solo-1",
+        title: "Context-Switching Metadata Loss",
+        score: 91,
+        likelihood: "High",
+        impact: "High",
         detectability: "Hidden",
-        whatCanGoWrong: "Technical teams provision higher-tier features than Sales actually closed.",
-        whyItMatters: "Direct margin erosion on every enterprise seat.",
-        howItFailsSilently: "Provisioning team uses a generic 'standard' template for all enterprise.",
-        earlySignal: "Discrepancy between contract SKU and provisioning log."
+        whatCanGoWrong: "Switching from 'Design Brain' to 'Sales Brain' relies on your ability to remember where a specific conversation left off.",
+        whyItMatters: "You miss subtle client requirements or project constraints stated in chat, leading to rework.",
+        howItFailsSilently: "The failure is attributed to 'Designer Error' rather than the structural lack of a centralized brief.",
+        earlySignal: "Re-reading the same Slack thread three times before you can start work."
+      }],
+      "handoff-breakdowns": [{
+        id: "hb-solo-1",
+        title: "Agreement-to-Asset Gap",
+        score: 76,
+        likelihood: "Moderate",
+        impact: "Moderate",
+        detectability: "Easy",
+        whatCanGoWrong: "The transition from 'Client Agrees' to 'Designer Starts' lacks a formal asset-collection event.",
+        whyItMatters: "Projects 'start' but immediately stall because the designer is waiting for content that was never formally requested.",
+        howItFailsSilently: "The designer assumes the client knows what to send; the client assumes the designer will ask.",
+        earlySignal: "A project listed as 'Active' having zero files in the project folder."
+      }],
+      "trust-erosion": [{
+        id: "te-solo-1",
+        title: "Opacity-Induced Client Anxiety",
+        score: 64,
+        likelihood: "Moderate",
+        impact: "Moderate",
+        detectability: "Hidden",
+        whatCanGoWrong: "Because you 'usually wait for them,' clients have no visibility into whether you are actually working or just waiting.",
+        whyItMatters: "Invisibility is perceived as unreliability, preventing high-ticket referrals.",
+        howItFailsSilently: "The client feels ignored during the 'Wait' state even if the designer is working hard on another project.",
+        earlySignal: "Clients sending 'just checking in' messages on day 3 of silence."
+      }],
+      "revenue-leakage": [{
+        id: "rl-solo-1",
+        title: "Uncaptured Scope Drift",
+        score: 82,
+        likelihood: "High",
+        impact: "Moderate",
+        detectability: "Hidden",
+        whatCanGoWrong: "Back-and-forth conversations in social messages often include new requests that aren't in the original proposal.",
+        whyItMatters: "You spend 20% more time on projects than you billed for, effectively lowering your hourly rate.",
+        howItFailsSilently: "The designer views these as 'quick favors' rather than unbilled structural scope expansion.",
+        earlySignal: "Final project file count being 2x what was anticipated."
       }],
       "scaling-fragility": [{
-        id: "sf-002",
-        title: "CS Lead Routing Bottleneck",
-        score: 95,
+        id: "sf-solo-2",
+        title: "Mental Buffer Saturation",
+        score: 96,
         likelihood: "Moderate",
         impact: "High",
         detectability: "Moderate",
-        whatCanGoWrong: "One CS lead handles ALL assignments via Slack. If volume triples, assignment stalls.",
-        whyItMatters: "The entire agency production engine stops during holiday surges.",
-        howItFailsSilently: "Queue builds up in the lead's DM inbox, invisible to leadership.",
-        earlySignal: "Slack thread count exceeding 50 unread messages in CS channel."
+        whatCanGoWrong: "The mental map works for 2 projects. At 5 active projects, the 'overdue feeling' becomes constant and paralyzed.",
+        whyItMatters: "The business reaches an artificial 'Growth Ceiling' where you cannot take more work despite having time.",
+        howItFailsSilently: "The ceiling is misidentified as a 'time' problem, but it is actually a 'RAM' (Memory) problem.",
+        earlySignal: "Closing your laptop early because the number of pending replies feels overwhelming."
       }]
     }
   }
