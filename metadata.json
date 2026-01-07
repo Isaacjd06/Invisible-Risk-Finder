@@ -1,0 +1,5 @@
+{
+  "name": "Invisible Risk Finder",
+  "description": "A narrow diagnostic utility that scans workflow descriptions for hidden risks, blind spots, and silent failures using a structured diagnostic taxonomy.",
+  "requestFramePermissions": []
+}
