@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { ShieldCheck, Mail, Lock, ArrowRight, ArrowLeft, UserPlus, AlertCircle } from 'lucide-react';
+import { ShieldCheck, Mail, Lock, ArrowRight, ArrowLeft, UserPlus, AlertCircle, User } from 'lucide-react';
 
 interface Props {
   onSignUpSuccess: () => void;
@@ -8,6 +8,7 @@ interface Props {
 }
 
 export const SignUpScreen: React.FC<Props> = ({ onSignUpSuccess, onBack }) => {
+  const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -16,6 +17,11 @@ export const SignUpScreen: React.FC<Props> = ({ onSignUpSuccess, onBack }) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+
+    if (!fullName.trim()) {
+      setError("Identification required: Please provide your full name.");
+      return;
+    }
 
     // Forensic-grade verification logic
     if (password.length < 8) {
@@ -52,6 +58,23 @@ export const SignUpScreen: React.FC<Props> = ({ onSignUpSuccess, onBack }) => {
           </header>
 
           <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-1.5">
+              <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Operator Full Name</label>
+              <div className="relative group">
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-indigo-600 transition-colors">
+                  <User size={18} />
+                </div>
+                <input 
+                  type="text" 
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                  placeholder="John Doe"
+                  className="w-full pl-11 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-600/20 focus:border-indigo-600 transition-all font-medium text-sm"
+                  required
+                />
+              </div>
+            </div>
+
             <div className="space-y-1.5">
               <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Email Identifier</label>
               <div className="relative group">

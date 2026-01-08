@@ -22,6 +22,8 @@ export const Layout: React.FC<Props> = ({
   onLogin, 
   onLogout 
 }) => {
+  const isAuthPage = currentView === 'login' || currentView === 'signup';
+
   return (
     <div className="min-h-screen flex flex-col bg-[#f8fafc]">
       <nav className="bg-white border-b border-slate-200 sticky top-0 z-40 w-full">
@@ -40,14 +42,16 @@ export const Layout: React.FC<Props> = ({
           </button>
           
           <div className="flex items-center gap-2 sm:gap-6">
-            <button 
-              onClick={() => onNavigate('credits')}
-              className={`text-[10px] sm:text-xs font-bold uppercase tracking-widest transition-colors ${
-                currentView === 'credits' ? 'text-indigo-600' : 'text-slate-500 hover:text-slate-900'
-              }`}
-            >
-              Pricing
-            </button>
+            {!isAuthPage && (
+              <button 
+                onClick={() => onNavigate('credits')}
+                className={`text-[10px] sm:text-xs font-bold uppercase tracking-widest transition-colors ${
+                  currentView === 'credits' ? 'text-indigo-600' : 'text-slate-500 hover:text-slate-900'
+                }`}
+              >
+                Pricing
+              </button>
+            )}
 
             {isLoggedIn ? (
               <>
@@ -93,12 +97,14 @@ export const Layout: React.FC<Props> = ({
                 </div>
               </>
             ) : (
-              <button 
-                onClick={onLogin}
-                className="flex items-center gap-2 px-3 sm:px-6 py-2 rounded-lg sm:rounded-xl bg-slate-900 text-white hover:bg-slate-800 transition-all font-black text-[10px] sm:text-xs uppercase tracking-[0.15em] shadow-lg shadow-indigo-100"
-              >
-                Log in
-              </button>
+              !isAuthPage && (
+                <button 
+                  onClick={onLogin}
+                  className="flex items-center gap-2 px-3 sm:px-6 py-2 rounded-lg sm:rounded-xl bg-slate-900 text-white hover:bg-slate-800 transition-all font-black text-[10px] sm:text-xs uppercase tracking-[0.15em] shadow-lg shadow-indigo-100"
+                >
+                  Log in
+                </button>
+              )
             )}
 
             <div className="hidden md:block h-4 w-px bg-slate-200"></div>
