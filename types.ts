@@ -47,4 +47,4 @@ export interface ScanReport {
   };
 }
 
-export type AppView = 'input' | 'loading' | 'report' | 'history';
+export type AppView = 'input' | 'loading' | 'report' | 'history' | 'invalid-input' | 'credits' | 'login' | 'signup';
